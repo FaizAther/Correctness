@@ -1,0 +1,41 @@
+
+Let gcd(a, b) denote the greatest common divisor of positive integers a and b, i.e., a >= 0 
+and b >= 0. The following are properties of gcd(a, b):
+
+i)
+    gcd(a, 0) = a
+ii)
+    gcd(a, a) == a
+iii)
+    gcd(a, b) == gcd(b, a)
+iv)
+    b > 0 ==> gcd(a, b) == gcd(b, a % b)
+
+method GCD1(a: int, b: int) returns (r: int)
+requires a != 0 && b != 0 
+ensures r == gcd(a,b)
+{
+    if a < b
+    
+    {
+        { a != 0 && b != 0 && a < b }
+        r := GCD1(b, a);
+    }
+    
+    else if (a % b == 0)
+    
+    {
+        { a != 0 && b != 0 && a >= b && a % b == 0 }
+        r := b;
+        { r == b }
+        { r == gcd(a,b) }
+    }
+    
+    else
+    
+    {
+        { a != 0 && b != 0 && a >= b && a % b != 0 }
+        { a % b >= 1 }
+        r := GCD1(b, a % b);
+    }
+}

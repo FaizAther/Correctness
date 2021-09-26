@@ -1,0 +1,167 @@
+/**
+  (a) Verify whether or not the following program
+      satisfies total correctness.
+      You should use weakest precondition reasoning
+      and may extend the loop invariant if required.
+      You will need to add a decreases clause to prove termination
+  (a) Weakest precondition proof (without termination) (16 marks)
+      Termination proof (2marks)
+*/
+
+function fusc(n: int): nat
+
+lemma rule1()
+  ensures fusc(0) == 0
+
+lemma rule2()
+  ensures fusc(1) == 1
+
+lemma rule3(n:nat)
+  ensures fusc(2*n) == fusc(n)
+
+lemma rule4(n:nat)
+  ensures fusc(2*n+1) == fusc(n) + fusc(n+1)
+
+method ComputeFusc(N: int) returns (b: int)
+  requires N >= 0 
+  ensures b == fusc(N)
+{
+  b := 0;
+  var n, a := N, 1;
+  //  { J }
+  while (n != 0)                                                // B
+    invariant fusc(N) == a * fusc(n) + b * fusc(n + 1)          // J
+  {
+    // { B && J }
+
+    { n % 2 == 0
+        ==> fusc(N) == (a + b) * fusc((n / 2)) + b * fusc((n / 2)) + 1))
+      &&
+      n % 2 != 0
+        ==> fusc(N) == a * fusc(((n - 1) / 2)) + (b + a) * fusc(((n - 1) / 2) + 1) }
+    if (n % 2 == 0)
+    {
+      { fusc(N) == (a + b) * fusc((n / 2)) + b * fusc((n / 2)) + 1) }
+      a := a + b;
+      { fusc(N) == a * fusc((n / 2)) + b * fusc((n / 2)) + 1) }
+      n := n / 2;
+      { fusc(N) == a * fusc(n) + b * fusc(n + 1) }
+    } else {
+      { fusc(N) == a * fusc(((n - 1) / 2)) + (b + a) * fusc(((n - 1) / 2) + 1) }
+      b := b + a;
+      { fusc(N) == a * fusc(((n - 1) / 2)) + b * fusc(((n - 1) / 2) + 1) }
+      n := (n - 1) / 2;
+      { fusc(N) == a * fusc(n) + b * fusc(n + 1) }
+    }
+    { fusc(N) == a * fusc(n) + b * fusc(n + 1) }
+
+    { J }
+  }
+  //  { !B && J }
+  //  { n == 0 && fusc(N) == a * fusc(n) + b * fusc(n + 1) }
+  //  { n == 0 && fusc(N) == a * fusc(0) + b * fusc(1) }
+  //  { n == 0 && fusc(N) == a * 0 + b * 1 }
+  //  { n == 0 && fusc(N) == b }
+  //  { b == fusc(N) }
+}
+//  { b == fusc(N) }
+
+
+
+/*
+---------------------------------------------------------------------------N=0
+  N        ||        n        ||        a        ||        b        ||
+  0        ||        0        ||        0        ||        0        ||
+---------------------------------------------------------------------------N=1
+  N        ||        n        ||        a        ||        b        ||
+  1        ||        1        ||        1        ||        0        ||
+  N        ||        n        ||        a        ||        b        ||
+---------------------------------------------------------------------------N=0
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+---------------------------------------------------------------------------N=0
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+---------------------------------------------------------------------------N=0
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+---------------------------------------------------------------------------N=0
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+---------------------------------------------------------------------------N=0
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+---------------------------------------------------------------------------N=0
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+---------------------------------------------------------------------------N=0
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+---------------------------------------------------------------------------N=0
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  N        ||        n        ||        a        ||        b        ||
+  
+
+*/

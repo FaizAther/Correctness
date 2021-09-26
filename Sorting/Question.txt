@@ -1,0 +1,56 @@
+
+(1)
+  Let the integer array r of length M
+  represent a set of distinct circles in the (x,y)-plane.
+  Circle i ( for 0 <= i < M) has centre (0, 0) and radius r[i].
+  Let the integer array x of length N
+  represent a set of distinct vertical lines.
+  Line i (for 0 <= i < N) has equation x = x[i] where x[i] >= 0.
+
+(a)
+  Assuming the values of x increase
+  as we move from position 0 to x.Length -1,
+  write a specification and implementation
+  of a Dafny method Tangent that,
+  given r and x as parameters,
+  returns a boolean value
+  indicating whether or not there exists a line in x
+  that is tangent to a circle in r.
+  The implementation should not
+    x)
+      iterate over either array
+      once a tangent has been found
+    x)
+      for a given circle in r,
+      should not iterate over array x
+      once it can be deduced that
+      no tangent will be found for that circle.
+    x)
+      Also, it must not use return or break statements.
+  
+  Verify your implementation using the Dafny verifier.
+  The following lemma maybe necessary
+  depending on your approach to the
+  specification and implementation.
+  There is no requirement to use it.
+
+  i)    Pre and postconditions  (1.5 marks)
+  ii)   Loop invariants         (4.5 marks)
+  iii)  Termination metrics     (1.5 marks)
+  iv)   Code                    (2.5 marks)
+
+lemma IncreasingArray(a: array<int>, n: int)
+  requires forall i:: 1 <= i < a.Length ==> a[i-1] < a[i]
+  requires 0 <= n< a.Length
+  ensures forall i:: n< i< a.Length ==> a[n] < a[i]
+  decreases a.Length -n
+{
+  if n == a.Length -1
+  {
+
+  }
+  else
+  {
+    IncreasingArray(a, n + 1);
+  }
+}
